@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<!-- 严格自适应视口配置 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>岷县二中高三年级第2级部巡课统计表</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Microsoft Yahei","SimHei",sans-serif}
+:root{
+    --primary:#2563eb;
+    --primary-light:#eff6ff;
+    --success:#059669;
+    --wechat-green:#07c160;
+    --danger:#dc2626;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --panel-bg:#f1f5f9;
+    --border:#e2e8f0;
+    --text-main:#0f172a;
+    --text-sub:#64748b;
+    --tab-active:#2563eb;
+    --tab-bg:#ffffff;
+    --tab-text:#64748b;
+    --tab-active-text:#2563eb;
+    --wechat-line:#e5e7eb;
+}
+body{
+    background:var(--bg);
+    color:var(--text-main);
+    padding-bottom:72px;
+    min-height:100vh;
+}
+/* 主内容自适应容器 */
+.main-wrap{
+    width:100%;
+    max-width:1400px;
+    margin:0 auto;
+    padding:clamp(12px,3vw,24px);
+}
+.page-title{
+    color:var(--text-main);
+    margin:0 0 clamp(16px,3vw,28px);
+    text-align:center;
+    font-size:clamp(20px,4vw,26px);
+    font-weight:700;
+    letter-spacing:0.5px;
+}
+/* 页面切换容器 */
+.page{display:none;}
+.page.active{display:block;}
+/* 通用卡片自适应 */
+.card{
+    background:var(--card);
+    border-radius:14px;
+    padding:clamp(14px,3vw,24px);
+    margin-bottom:clamp(14px,3vw,24px);
+    box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.card-title{
+    font-size:clamp(16px,3vw,19px);
+    text-align:center;
+    margin-bottom:clamp(14px,3vw,20px);
+    color:var(--primary);
+    font-weight:600;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--border);
+}
+/* 顶部信息网格：大屏2栏，手机1栏 */
+.form-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap:clamp(12px,2vw,18px);
+    margin-bottom:clamp(14px,3vw,22px);
+}
+.form-item{
+    background:var(--panel-bg);
+    border-radius:12px;
+    padding:clamp(14px,2vw,18px) clamp(10px,2vw,14px);
+    width:100%;
+}
+.form-item label{
+    display:block;
+    text-align:center;
+    font-size:clamp(17px,3vw,21px);
+    font-weight:600;
+    margin-bottom:clamp(8px,2vw,14px);
+    color:var(--text-main);
+}
+.form-item input,.form-item select{
+    width:100%;
+    padding:clamp(10px,2vw,14px);
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:clamp(14px,2vw,16px);
+    background:#fff;
+    transition:0.15s;
+}
+.form-item input:focus,.form-item select:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+/* 班级录入表格 */
+.class-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    margin-bottom:clamp(14px,3vw,22px);
+    border-radius:10px;
+    overflow:hidden;
+}
+.class-table th,.class-table td{
+    border:1px solid var(--border);
+    padding:clamp(8px,2vw,12px) clamp(4px,1vw,6px);
+    text-align:center;
+    font-size:clamp(13px,2vw,15px);
+}
+.class-table th{
+    background:var(--panel-bg);
+    font-weight:600;
+    font-size:clamp(14px,2vw,16px);
+}
+.class-table tr:nth-child(even) td{background:var(--bg);}
+.class-table input{
+    width:100%;
+    padding:clamp(7px,2vw,10px);
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:clamp(13px,2vw,14px);
+}
+.class-table input:focus{outline:none;border-color:var(--primary);}
+/* 按钮组自适应 */
+.btn-group{
+    display:flex;
+    flex-direction:column;
+    gap:clamp(10px,2vw,14px);
+    margin-top:10px;
+}
+button{
+    width:100%;
+    padding:clamp(12px,2vw,16px);
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:clamp(14px,2vw,16px);
+    font-weight:500;
+    transition:all 0.15s ease;
+}
+#saveAllBtn{background:var(--primary);color:#fff;}
+#saveAllBtn:hover{background:#1d4ed8;}
+#exportExcelBtn{background:var(--success);color:#fff;}
+#exportExcelBtn:hover{background:#047857;}
+#clearAll{background:var(--danger);color:#fff;}
+#clearAll:hover{background:#b91c1c;}
+/* 通用数据表格 */
+.data-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    margin-top:10px;
+    font-size:clamp(12px,1.8vw,13px);
+    border-radius:10px;
+    overflow:hidden;
+}
+.data-table th,.data-table td{
+    border:1px solid var(--border);
+    padding:clamp(7px,1.5vw,10px) clamp(3px,1vw,4px);
+    text-align:center;
+    vertical-align:middle;
+}
+.data-table th{background:var(--panel-bg);font-weight:600;font-size:clamp(13px,2vw,14px);}
+.data-table tr:nth-child(even) td{background:var(--bg);}
+.summary-card{background:#eff6ff;}
+.table-scroll{overflow-x:auto;width:100%;}
+.del-btn{
+    padding:clamp(4px,1vw,5px) clamp(6px,1vw,8px);
+    background:var(--danger);
+    color:#fff;
+    font-size:clamp(10px,1.5vw,12px);
+    border-radius:6px;
+}
+.del-btn:hover{background:#b91c1c;}
+.class-row td{background:#fffbeb;font-size:clamp(10px,1.5vw,12px);color:#991b1b;}
+.total-cell{color:var(--danger);font-weight:700;font-size:clamp(13px,2vw,14px);}
+
+/* ========== 仿微信登录自适应模块 ========== */
+.wechat-login-wrap{
+    width:100%;
+    max-width:440px;
+    margin:clamp(20px,5vw,48px) auto;
+    background:#fff;
+    border-radius:16px;
+    padding:clamp(24px,6vw,44px) clamp(18px,5vw,32px);
+    box-shadow:0 2px 12px rgba(0,0,0,0.05);
+}
+.wechat-title{
+    text-align:center;
+    font-size:clamp(22px,5vw,28px);
+    font-weight:500;
+    margin-bottom:clamp(28px,6vw,40px);
+    color:#111;
+}
+.wechat-input-item{
+    border-bottom:1px solid var(--wechat-line);
+    margin-bottom:clamp(12px,3vw,18px);
+}
+.wechat-input-item input{
+    width:100%;
+    border:none;
+    padding:clamp(12px,3vw,16px) 4px;
+    font-size:clamp(16px,3vw,18px);
+    outline:none;
+    background:transparent;
+}
+.wechat-add-btn{
+    margin-top:clamp(20px,4vw,28px);
+    background:var(--wechat-green);
+    color:#fff;
+    border-radius:8px;
+}
+.wechat-add-btn:hover{background:#06ad56;}
+.user-list-title{
+    margin-top:clamp(24px,5vw,36px);
+    text-align:center;
+    font-size:clamp(14px,3vw,16px);
+    color:#444;
+}
+.user-list-table{
+    width:100%;
+    border-collapse:separate;
+    border-radius:8px;
+    overflow:hidden;
+    margin-top:12px;
+}
+.user-list-table th,.user-list-table td{
+    border:1px solid var(--border);
+    padding:clamp(8px,2vw,10px);
+    text-align:center;
+    font-size:clamp(12px,2vw,14px);
+}
+.user-del{
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    padding:4px 8px;
+    border-radius:4px;
+    font-size:12px;
+}
+
+/* ========== 底部APP导航栏 全设备适配 ========== */
+.bottom-tab{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:clamp(58px,10vw,68px);
+    background:var(--tab-bg);
+    display:flex;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.08);
+    z-index:999;
+}
+.tab-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    background:transparent;
+    color:var(--tab-text);
+    font-size:clamp(12px,2vw,14px);
+    gap:4px;
+    cursor:pointer;
+}
+.tab-item.active{color:var(--tab-active-text);}
+.tab-icon{font-size:clamp(18px,4vw,22px);}
+
+/* ========== 断点细分适配 ========== */
+/* 平板小屏 768px以下 */
+@media screen and (max-width:768px){
+    .form-grid{grid-template-columns:1fr;}
+    body{padding-bottom:76px;}
+}
+/* 超小手机 480px以下 */
+@media screen and (max-width:480px){
+    .wechat-login-wrap{padding:24px 16px;}
+    .page-title{letter-spacing:0;}
+}
+</style>
+</head>
+<body>
+<div class="main-wrap">
+    <h1 class="page-title">岷县二中高三年级第2级部巡课统计表</h1>
+
+    <!-- 页面1：巡课录入 -->
+    <div class="page active" id="page1">
+        <div class="card">
+            <h2 class="card-title">一、当日巡课基础信息填写</h2>
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>日期</label>
+                    <input type="date" id="date">
+                </div>
+                <div class="form-item">
+                    <label>周数</label>
+                    <input type="number" id="weekNum" placeholder="输入周数">
+                </div>
+                <div class="form-item">
+                    <label>节次</label>
+                    <select id="jieci">
+                        <option>早读</option>
+                        <option>上午第一节课</option>
+                        <option>上午第二节课</option>
+                        <option>上午第三节课</option>
+                        <option>上午第四节课</option>
+                        <option>上午第五节课</option>
+                        <option>午休</option>
+                        <option>下午第一节课</option>
+                        <option>下午第二节课</option>
+                        <option>下午第三节课</option>
+                        <option>下午自习</option>
+                        <option>晚自习</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label>巡课教师</label>
+                    <input id="xunkeTeacher" placeholder="填写巡课人姓名">
+                </div>
+            </div>
+
+            <h2 class="card-title">二、各班巡课明细录入</h2>
+            <div class="table-scroll">
+                <table class="class-table">
+                    <thead>
+                        <tr>
+                            <th>班级</th>
+                            <th>授课教师</th>
+                            <th>巡课情况（正常/迟到/缺课）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>高三(2)班</td>
+                            <td><input class="tea-input" data-class="高三(2)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(2)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(13)班</td>
+                            <td><input class="tea-input" data-class="高三(13)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(13)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(14)班</td>
+                            <td><input class="tea-input" data-class="高三(14)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(14)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(15)班</td>
+                            <td><input class="tea-input" data-class="高三(15)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(15)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(16)班</td>
+                            <td><input class="tea-input" data-class="高三(16)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(16)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(17)班</td>
+                            <td><input class="tea-input" data-class="高三(17)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(17)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(18)班</td>
+                            <td><input class="tea-input" data-class="高三(18)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(18)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(19)班</td>
+                            <td><input class="tea-input" data-class="高三(19)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(19)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(20)班</td>
+                            <td><input class="tea-input" data-class="高三(20)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(20)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(21)班</td>
+                            <td><input class="tea-input" data-class="高三(21)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(21)班" placeholder="无异常填正常"></td>
+                        </tr>
+                        <tr>
+                            <td>高三(22)班</td>
+                            <td><input class="tea-input" data-class="高三(22)班" placeholder="填写任课教师姓名"></td>
+                            <td><input class="note-input" data-class="高三(22)班" placeholder="无异常填正常"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn-group">
+                <button id="saveAllBtn">批量保存当前全部班级巡课记录</button>
+                <button id="exportExcelBtn">导出Excel文件（明细台账+教师课时汇总）</button>
+                <button id="clearAll">清空系统全部历史记录（谨慎操作）</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面2：巡课统计 -->
+    <div class="page" id="page2">
+        <div class="card">
+            <h2 class="card-title">一、历史巡课记录台账（可删除错误记录）</h2>
+            <div class="table-scroll">
+                <table class="data-table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>日期</th>
+                            <th>周数</th>
+                            <th>节次</th>
+                            <th>班级</th>
+                            <th>授课教师</th>
+                            <th>巡课教师</th>
+                            <th>巡课情况</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card summary-card">
+            <h2 class="card-title">二、教师课时汇总统计表（课时+上课班级分行展示）</h2>
+            <div class="table-scroll">
+                <div id="countResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面3：用户管理｜仿微信登录自适应卡片 -->
+    <div class="page" id="page3">
+        <div class="wechat-login-wrap">
+            <div class="wechat-title">用户登录管理</div>
+            <div class="wechat-input-item">
+                <input type="text" id="userName" placeholder="请输入用户名">
+            </div>
+            <div class="wechat-input-item">
+                <input type="password" id="userPwd" placeholder="请输入密码">
+            </div>
+            <button class="wechat-add-btn" id="addUserBtn">添加用户账号</button>
+
+            <div class="user-list-title">已有用户列表</div>
+            <div class="table-scroll">
+                <table class="user-list-table" id="userTable">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>用户名</th>
+                            <th>密码</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 底部APP导航栏 -->
+<div class="bottom-tab">
+    <button class="tab-item active" data-page="page1">
+        <span class="tab-icon">📝</span>
+        <span>巡课录入</span>
+    </button>
+    <button class="tab-item" data-page="page2">
+        <span class="tab-icon">📊</span>
+        <span>巡课统计</span>
+    </button>
+    <button class="tab-item" data-page="page3">
+        <span class="tab-icon">👤</span>
+        <span>用户管理</span>
+    </button>
+</div>
+
+<script>
+// Tab切换逻辑
+const tabBtns = document.querySelectorAll(".tab-item");
+const pages = document.querySelectorAll(".page");
+tabBtns.forEach(btn=>{
+    btn.onclick = function(){
+        const targetPage = this.dataset.page;
+        tabBtns.forEach(b=>b.classList.remove("active"));
+        pages.forEach(p=>p.classList.remove("active"));
+        this.classList.add("active");
+        document.getElementById(targetPage).classList.add("active");
+    }
+})
+
+// 默认今日日期
+const today = new Date();
+const formatDate = (d)=>{
+    let m = d.getMonth()+1;
+    let day = d.getDate();
+    return `${d.getFullYear()}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`
+}
+document.getElementById('date').value = formatDate(today);
+
+// 存储常量
+const STORAGE_KEY = "xunkeDataList";
+const USER_STORAGE_KEY = "userList";
+const saveAllBtn = document.getElementById("saveAllBtn");
+const exportExcelBtn = document.getElementById("exportExcelBtn");
+const clearAllBtn = document.getElementById("clearAll");
+const tableBody = document.querySelector("#dataTable tbody");
+const countResult = document.getElementById("countResult");
+const userTableBody = document.querySelector("#userTable tbody");
+const addUserBtn = document.getElementById("addUserBtn");
+
+// 节次、班级固定数组
+const allJieciList = ["早读","上午第一节课","上午第二节课","上午第三节课","上午第四节课","上午第五节课","午休","下午第一节课","下午第二节课","下午第三节课","下午自习","晚自习"];
+const classList = ["高三(2)班","高三(13)班","高三(14)班","高三(15)班","高三(16)班","高三(17)班","高三(18)班","高三(19)班","高三(20)班","高三(21)班","高三(22)班"];
+
+// 巡课数据读写
+function getData(){
+    let str = localStorage.getItem(STORAGE_KEY);
+    return str ? JSON.parse(str) : [];
+}
+function saveData(arr){localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));}
+function deleteRecord(index){
+    let list = getData();
+    if(confirm("确定删除这条巡课记录？删除后无法恢复！")){
+        list.splice(index,1);
+        saveData(list);
+        renderTable();
+    }
+}
+function renderTable(){
+    let list = getData();
+    tableBody.innerHTML = "";
+    list.forEach((item,idx)=>{
+        let tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${idx+1}</td>
+            <td>${item.date}</td>
+            <td>${item.weekNum}</td>
+            <td>${item.jieci}</td>
+            <td>${item.banji}</td>
+            <td>${item.teacher}</td>
+            <td>${item.xunkeTeacher}</td>
+            <td>${item.remark}</td>
+            <td><button class="del-btn" onclick="deleteRecord(${idx})">删除</button></td>
+        `;
+        tableBody.appendChild(tr);
+    })
+    renderCount();
+}
+// 汇总分行渲染
+function renderCount(){
+    let list = getData();
+    let stat = {};
+    list.forEach(item=>{
+        let t = item.teacher;
+        if(!stat[t]) stat[t] = Object.fromEntries(allJieciList.map(j=>[j,{num:0,classList:[]}]));
+        stat[t][item.jieci].num += 1;
+        if(!stat[t][item.jieci].classList.includes(item.banji)) stat[t][item.jieci].classList.push(item.banji);
+    })
+    let html = "<table class='data-table'><tr><th>教师姓名</th>";
+    allJieciList.forEach(j=>html += `<th>${j}(课时)</th>`);
+    html += "<th>总课时</th></tr>";
+    for(let t in stat){
+        let total = 0;
+        html += `<tr><td style="font-weight:600">${t}</td>`;
+        allJieciList.forEach(j=>{let n=stat[t][j].num;total+=n;html+=`<td>${n}</td>`;})
+        html += `<td class="total-cell">${total}</td></tr>`;
+        html += `<tr class="class-row"><td>对应上课班级</td>`;
+        allJieciList.forEach(j=>html += `<td>${stat[t][j].classList.join("、")}</td>`);
+        html += `<td></td></tr>`;
+    }
+    html += "</table>";
+    countResult.innerHTML = html;
+}
+// 批量保存
+saveAllBtn.onclick = function(){
+    const dateVal = document.getElementById("date").value;
+    const weekVal = document.getElementById("weekNum").value.trim();
+    const jieciVal = document.getElementById("jieci").value;
+    const xunkeVal = document.getElementById("xunkeTeacher").value.trim();
+    if(!weekVal){alert("请填写周数！");return;}
+    if(!xunkeVal){alert("请填写巡课教师姓名！");return;}
+    let allData = getData();
+    let newRecords = [];
+    classList.forEach(cn=>{
+        let tea = document.querySelector(`.tea-input[data-class="${cn}"]`).value.trim();
+        let note = document.querySelector(`.note-input[data-class="${cn}"]`).value.trim();
+        if(!tea) return;
+        let repeat = allData.some(i=>i.date===dateVal&&i.weekNum===weekVal&&i.jieci===jieciVal&&i.banji===cn);
+        if(repeat){alert(`${dateVal}第${weekVal}周${jieciVal}${cn}已有记录，自动跳过`);return;}
+        newRecords.push({date:dateVal,weekNum:weekVal,jieci:jieciVal,banji:cn,teacher:tea,xunkeTeacher:xunkeVal,remark:note});
+    })
+    if(newRecords.length === 0){alert("未填写任何班级授课教师，无需保存");return;}
+    allData.push(...newRecords);
+    saveData(allData);
+    alert(`保存成功！共录入${newRecords.length}个班级巡课记录`);
+    document.querySelectorAll(".tea-input").forEach(i=>i.value="");
+    document.querySelectorAll(".note-input").forEach(i=>i.value="");
+    renderTable();
+}
+// Excel导出
+function exportExcel(){
+    let list = getData();
+    if(list.length === 0){alert("暂无巡课记录，无法导出");return;}
+    let detailData = [["序号","日期","周数","节次","班级","授课教师","巡课教师","巡课情况"]];
+    list.forEach((item,idx)=>detailData.push([idx+1,item.date,item.weekNum,item.jieci,item.banji,item.teacher,item.xunkeTeacher,item.remark]));
+    let stat = {};
+    list.forEach(item=>{
+        let t = item.teacher;
+        if(!stat[t]) stat[t] = Object.fromEntries(allJieciList.map(j=>[j,{num:0,classList:[]}]));
+        stat[t][item.jieci].num += 1;
+        if(!stat[t][item.jieci].classList.includes(item.banji)) stat[t][item.jieci].classList.push(item.banji);
+    })
+    let header = ["教师姓名"];
+    allJieciList.forEach(j=>header.push(`${j}(课时)`));
+    header.push("总课时");
+    let summary = [header];
+    for(let t in stat){
+        let numRow = [t];
+        let total = 0;
+        allJieciList.forEach(j=>{let n=stat[t][j].num;total+=n;numRow.push(n);})
+        numRow.push(total);
+        summary.push(numRow);
+        let clsRow = ["对应上课班级"];
+        allJieciList.forEach(j=>clsRow.push(stat[t][j].classList.join("、")));
+        clsRow.push("");
+        summary.push(clsRow);
+    }
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(detailData), "巡课明细台账");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summary), "教师课时汇总表");
+    XLSX.writeFile(wb, "岷县二中高三2级部巡课台账.xlsx");
+}
+exportExcelBtn.onclick = exportExcel;
+clearAllBtn.onclick = function(){
+    if(confirm("⚠️ 危险操作：确定清空所有巡课记录？删除后无法恢复！")){
+        localStorage.removeItem(STORAGE_KEY);
+        renderTable();
+        alert("全部记录已清空");
+    }
+}
+
+// 用户管理模块
+function getUserList(){
+    let str = localStorage.getItem(USER_STORAGE_KEY);
+    return str ? JSON.parse(str) : [];
+}
+function saveUserList(arr){localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(arr));}
+function delUser(idx){
+    let list = getUserList();
+    if(confirm("确定删除该用户？")){
+        list.splice(idx,1);
+        saveUserList(list);
+        renderUserTable();
+    }
+}
+function renderUserTable(){
+    let list = getUserList();
+    userTableBody.innerHTML = "";
+    list.forEach((u,i)=>{
+        let tr = document.createElement("tr");
+        tr.innerHTML = `<td>${i+1}</td><td>${u.username}</td><td>${u.password}</td><td><button class="user-del" onclick="delUser(${i})">删除</button></td>`;
+        userTableBody.appendChild(tr);
+    })
+}
+addUserBtn.onclick = function(){
+    let name = document.getElementById("userName").value.trim();
+    let pwd = document.getElementById("userPwd").value.trim();
+    if(!name || !pwd){alert("用户名和密码不能为空！");return;}
+    let list = getUserList();
+    if(list.some(u=>u.username === name)){alert("该用户名已存在！");return;}
+    list.push({username:name,password:pwd});
+    saveUserList(list);
+    alert("新增用户成功");
+    document.getElementById("userName").value = "";
+    document.getElementById("userPwd").value = "";
+    renderUserTable();
+}
+
+// 初始化渲染
+renderTable();
+renderUserTable();
+</script>
+</body>
+</html>
