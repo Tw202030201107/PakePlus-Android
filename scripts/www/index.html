@@ -193,19 +193,149 @@
         .form-item.full {
             grid-column: 1 / -1;
         }
+
+        /* ★★★★★ 表格滚动容器 — 核心优化 ★★★★★ */
         .table-wrap {
-            overflow-x: auto;
+            overflow: auto;
             -webkit-overflow-scrolling: touch;
+            max-height: 45vh;
+            position: relative;
             margin: 0 -6px;
             padding: 0 6px;
+            border-radius: 10px;
+            border: 1px solid #eef2f6;
+            background: #ffffff;
         }
+        .table-wrap table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 600px;
+        }
+
+        /* 固定表头 */
+        .table-wrap table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f1f5f9;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+        /* 固定第一列 */
+        .table-wrap table tbody td:first-child,
+        .table-wrap table thead th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background: #ffffff;
+        }
+        .table-wrap table thead th:first-child {
+            z-index: 15;
+            background: #f1f5f9;
+        }
+
+        /* ===== 录入页专用 — 移除内部滚动，表格随页面自然展开 ===== */
+        #page1 .table-wrap {
+            max-height: none;
+            overflow-y: visible;
+            overflow-x: auto;
+            border: 1px solid #eef2f6;
+        }
+        /* 录入页表格内容区域也取消sticky表头，因为不再滚动 */
+        #page1 .table-wrap table thead th {
+            position: static;
+            background: #f1f5f9;
+        }
+        #page1 .table-wrap table tbody td:first-child,
+        #page1 .table-wrap table thead th:first-child {
+            position: static;
+            background: #ffffff;
+        }
+        #page1 .table-wrap table thead th:first-child {
+            background: #f1f5f9;
+        }
+        /* 录入页表格最小宽度调整，适配手机 */
+        #page1 .table-wrap table {
+            min-width: 380px;
+        }
+
+        /* ===== 课后服务专用滚动容器 — 固定高度 + 滚动，表头与第一列固定 ===== */
+        .service-summary-wrap {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            height: 45vh;
+            min-height: 180px;
+            position: relative;
+            margin: 0 -6px;
+            padding: 0 6px;
+            border-radius: 10px;
+            border: 1px solid #eef2f6;
+            background: #ffffff;
+            display: block;
+        }
+        .service-summary-wrap table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 900px;
+            display: table;
+        }
+        .service-summary-wrap table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f1f5f9;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+        .service-summary-wrap table tbody td:first-child,
+        .service-summary-wrap table thead th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background: #ffffff;
+        }
+        .service-summary-wrap table thead th:first-child {
+            z-index: 15;
+            background: #f1f5f9;
+        }
+
+        /* ===== 教师详情模态框中的表格 ===== */
+        .teacher-detail-table-wrap {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            max-height: 55vh;
+            position: relative;
+            border-radius: 8px;
+            border: 1px solid #eef2f6;
+        }
+        .teacher-detail-table-wrap table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 500px;
+        }
+        .teacher-detail-table-wrap table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f1f5f9;
+        }
+        .teacher-detail-table-wrap table tbody td:first-child,
+        .teacher-detail-table-wrap table thead th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background: #ffffff;
+        }
+        .teacher-detail-table-wrap table thead th:first-child {
+            z-index: 15;
+            background: #f1f5f9;
+        }
+
+        /* ===== 其他通用表格样式 ===== */
         .class-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
             border-radius: 10px;
             overflow: hidden;
-            min-width: 380px;
         }
         .class-table th,
         .class-table td {
@@ -952,6 +1082,74 @@
             margin-right: 4px;
         }
 
+        /* ===== 课后服务统计表样式 ===== */
+        .service-summary-wrap table {
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+        .service-summary-wrap table th,
+        .service-summary-wrap table td {
+            border: 1px solid #e2e8f0;
+            padding: 3px 4px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .service-summary-wrap table th {
+            background: #f1f5f9;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .service-summary-wrap .total-row td {
+            background: #dbeafe;
+            font-weight: 700;
+        }
+        .service-summary-wrap .empty-hint {
+            text-align: center;
+            color: #94a3b8;
+            padding: 16px 0;
+        }
+
+        /* ===== 教师详情模态框 ===== */
+        .teacher-detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .teacher-detail-table th,
+        .teacher-detail-table td {
+            border: 1px solid #e2e8f0;
+            padding: 4px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .teacher-detail-table th {
+            background: #f1f5f9;
+            font-weight: 600;
+        }
+        .teacher-detail-table .empty-row td {
+            padding: 12px;
+            color: #94a3b8;
+        }
+
+        /* ★★★ 统计页卡片标题粘性定位 ★★★ */
+        .page#page2 .card {
+            padding-top: 0;
+            overflow: visible;
+        }
+        .page#page2 .card .card-title {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #ffffff;
+            padding: 12px 12px 10px 12px;
+            margin: 0 -12px 12px -12px;
+            border-bottom: 1px solid #eef2f6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        /* ===== 响应式适配 ===== */
         @media (max-width: 420px) {
             .app-container {
                 padding: 12px 8px 16px;
@@ -1001,6 +1199,52 @@
             .cache-list-item .cache-actions {
                 justify-content: flex-end;
             }
+            .service-summary-wrap table {
+                font-size: 10px;
+                min-width: 600px;
+            }
+            .service-summary-wrap table th,
+            .service-summary-wrap table td {
+                padding: 2px 3px;
+            }
+            .load-hint {
+                font-size: 12px;
+            }
+            .teacher-detail-table {
+                font-size: 11px;
+            }
+            .teacher-detail-table th,
+            .teacher-detail-table td {
+                padding: 3px 4px;
+            }
+            .page#page2 .card .card-title {
+                margin: 0 -8px 12px -8px;
+                padding: 10px 8px 8px 8px;
+            }
+            .table-wrap,
+            .service-summary-wrap {
+                max-height: 40vh;
+                height: 40vh;
+            }
+            .teacher-detail-table-wrap {
+                max-height: 45vh;
+            }
+            /* 录入页在移动端也保持自然展开 */
+            #page1 .table-wrap {
+                max-height: none;
+                overflow-y: visible;
+            }
+            #page1 .table-wrap table {
+                min-width: 300px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .table-wrap,
+            .service-summary-wrap {
+                max-height: 35vh;
+                height: 35vh;
+            }
         }
     </style>
 </head>
@@ -1012,7 +1256,7 @@
 
         <div class="app-title">
             高三级第二级部巡课记录系统
-            <small>岷县二中内部专用 v4.9.2</small>
+            <small>岷县二中内部专用 v4.9.23</small>
         </div>
 
         <div id="mainContent">
@@ -1025,6 +1269,7 @@
                         <div class="form-item">
                             <label>日期</label>
                             <input type="date" id="date" />
+                            <div style="text-align:center;font-size:14px;color:#2563eb;margin-top:4px;font-weight:500;" id="dayOfWeekDisplay">📅 请选择日期</div>
                             <div class="error-msg" id="dateError"></div>
                         </div>
                         <div class="form-item">
@@ -1047,10 +1292,12 @@
                             <div class="error-msg" id="xunkeError"></div>
                         </div>
                     </div>
+                    <div class="load-hint" id="loadHint">💡 选择日期和节次后自动加载已有记录</div>
                 </div>
 
                 <div class="card">
                     <div class="card-title">🏫 各班巡课明细</div>
+                    <!-- 录入页表格容器 — 已移除内部滚动，跟随页面自然展开 -->
                     <div class="table-wrap">
                         <table class="class-table" id="classTable">
                             <thead><tr><th>班级</th><th>授课教师</th><th>巡课情况</th><th>备注</th></tr></thead>
@@ -1058,10 +1305,7 @@
                         </table>
                     </div>
                     <div class="btn-group">
-                        <button class="btn-primary" id="saveBtn">💾 保存当前班级巡课记录</button>
-                        <div class="btn-row">
-                            <button class="btn-success" id="exportExcelBtn">📊 导出全部Excel（明细+汇总）</button>
-                        </div>
+                        <button class="btn-primary" id="saveBtn">💾 保存当前班级巡课记录（更新或新增）</button>
                     </div>
                 </div>
             </div>
@@ -1088,15 +1332,41 @@
                     </div>
                     <div class="table-wrap">
                         <table class="data-table" id="historyTable">
-                            <thead><tr><th>序号</th><th>日期</th><th>周数</th><th>节次</th><th>班级</th><th>授课教师</th><th>巡课教师</th><th>巡课情况</th><th>备注</th><th>操作</th></tr></thead>
+                            <thead><tr>
+                                <th>序号</th>
+                                <th>日期</th>
+                                <th>星期</th>
+                                <th>周数</th>
+                                <th>节次</th>
+                                <th>班级</th>
+                                <th>授课教师</th>
+                                <th>巡课教师</th>
+                                <th>巡课情况</th>
+                                <th>备注</th>
+                                <th>巡课时间</th>
+                                <th>操作</th>
+                            </tr></thead>
                             <tbody id="historyBody"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="card" style="background:#eff6ff;">
-                    <div class="card-title">📈 教师课时汇总（含上课班级）</div>
+                    <div class="card-title">📈 教师课时汇总（含上课班级） <span style="font-size:12px;font-weight:400;color:#64748b;">点击教师姓名查看详情</span></div>
                     <div class="table-wrap" id="summaryWrap"></div>
+                </div>
+
+                <!-- ★★★ 课后服务统计汇总（按每节课汇总，包含所有课时，含周末） ★★★ -->
+                <div class="card" style="background:#fdf2f8;">
+                    <div class="card-title" style="color:#be185d;">📋 课后服务统计汇总（按每节课汇总）</div>
+                    <div style="font-size:13px;color:#64748b;margin-bottom:8px;text-align:center;">
+                        显示每位教师每周在具体节次上的课时数（包含所有课时，含周末）
+                    </div>
+                    <div id="serviceWeekFilter" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;"></div>
+                    <div class="service-summary-wrap" id="serviceSummaryWrap"></div>
+                    <div style="font-size:12px;color:#94a3b8;margin-top:6px;text-align:center;">
+                        💡 导出功能已整合至“设置”页面，请前往设置页导出完整数据
+                    </div>
                 </div>
 
                 <div class="card" style="background:#fefce8;">
@@ -1119,7 +1389,10 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn-success" id="exportAllBtn">📊 导出明细+汇总Excel</button>
+                        <button class="btn-success" id="exportAllBtn">📊 导出完整数据（明细+周明细+汇总+周汇总+课后服务全部/每周汇总）</button>
+                    </div>
+                    <div style="font-size:12px;color:#94a3b8;margin-top:6px;text-align:center;">
+                        💡 导出文件包含：巡课明细、每周明细、教师汇总、每周汇总、课后服务全部汇总及每周汇总
                     </div>
                 </div>
 
@@ -1207,7 +1480,7 @@
                         </div>
                     </div>
 
-                    <div class="version-tag">版本 v4.9.2 · 修复缓存恢复后统计页刷新问题</div>
+                    <div class="version-tag">版本 v4.9.23 · 课后服务汇总已包含所有课时（含周末）</div>
                 </div>
             </div>
 
@@ -1234,6 +1507,7 @@
         <div class="modal-box">
             <h3>✏️ 编辑记录</h3>
             <div class="field"><label>日期</label><input type="date" id="editDate" /></div>
+            <div class="field"><label>星期</label><input type="text" id="editDayOfWeek" readonly style="background:#f1f5f9;color:#2563eb;font-weight:500;" /></div>
             <div class="field"><label>周数</label><input type="number" id="editWeekNum" /></div>
             <div class="field"><label>节次</label><select id="editJieci"><option>早读</option><option>上午第一节课</option><option>上午第二节课</option><option>上午第三节课</option><option>上午第四节课</option><option>上午第五节课</option><option>午休</option><option>下午第一节课</option><option>下午第二节课</option><option>下午第三节课</option><option>下午自习</option><option>晚自习</option></select></div>
             <div class="field"><label>班级</label><input type="text" id="editBanji" readonly style="background:#f1f5f9;" /></div>
@@ -1242,6 +1516,23 @@
             <div class="field"><label>巡课情况</label><select id="editRemark"><option>正常</option><option>迟到</option><option>缺课</option><option>请假</option></select></div>
             <div class="field"><label>备注</label><input type="text" id="editRemarkDetail" placeholder="可选备注" /></div>
             <div class="btn-row"><button class="btn-primary" id="saveEditBtn">保存</button><button class="btn-gray" id="cancelEditBtn">取消</button></div>
+        </div>
+    </div>
+
+    <!-- ===== 教师详情模态框 ===== -->
+    <div class="modal-overlay" id="teacherDetailModal">
+        <div class="modal-box">
+            <h3 id="teacherDetailTitle">📋 教师巡课明细</h3>
+            <div style="font-size:14px;color:#475569;margin-bottom:8px;text-align:center;" id="teacherDetailSummary"></div>
+            <div class="teacher-detail-table-wrap">
+                <table class="teacher-detail-table" id="teacherDetailTable">
+                    <thead><tr><th>日期</th><th>星期</th><th>周数</th><th>节次</th><th>班级</th><th>巡课情况</th><th>备注</th></tr></thead>
+                    <tbody id="teacherDetailBody"></tbody>
+                </table>
+            </div>
+            <div class="btn-row" style="margin-top:12px;">
+                <button class="btn-gray" id="closeTeacherDetailBtn">关闭</button>
+            </div>
         </div>
     </div>
 
@@ -1264,14 +1555,14 @@
 
     <script>
         // ================================================================
-        //  巡课系统 v4.9.2
-        //  修复：缓存恢复后统计页面数据不刷新问题
+        //  巡课系统 v4.9.23
+        //  课后服务汇总已包含所有课时（含周末）
         // ================================================================
 
         // ---------- 常量 ----------
         var STORAGE_KEY = 'xunkeDataList_v2';
         var VERSION_KEY = 'app_version';
-        var APP_VERSION = '4.9.2';
+        var APP_VERSION = '4.9.23';
         var DRAFT_KEY = 'xunkeDraft_v2';
         var TEACHER_LIST_KEY = 'teacherList_v2';
         var CLASS_LIST_KEY = 'classList_v2';
@@ -1282,6 +1573,10 @@
         var ALL_JIECI = ['早读', '上午第一节课', '上午第二节课', '上午第三节课', '上午第四节课', '上午第五节课', '午休', '下午第一节课', '下午第二节课', '下午第三节课',
             '下午自习', '晚自习'
         ];
+
+        var WEEK_DAYS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+        var SERVICE_TABLE_COLS = 1 + ALL_JIECI.length + 1;
 
         // ---------- 默认数据 ----------
         var DEFAULT_TEACHERS = [
@@ -1611,6 +1906,37 @@
             } catch (_) { return null; }
         }
 
+        function getDayOfWeek(dateStr) {
+            if (!dateStr) return '';
+            var d = new Date(dateStr);
+            if (isNaN(d.getTime())) return '';
+            return WEEK_DAYS[d.getDay()];
+        }
+
+        function updateDayOfWeek() {
+            var dateVal = document.getElementById('date').value;
+            var display = document.getElementById('dayOfWeekDisplay');
+            if (dateVal) {
+                var dow = getDayOfWeek(dateVal);
+                display.textContent = '📅 ' + dow;
+                display.style.color = '#2563eb';
+            } else {
+                display.textContent = '📅 请选择日期';
+                display.style.color = '#94a3b8';
+            }
+        }
+
+        function getNowTimeStr() {
+            var d = new Date();
+            var y = d.getFullYear();
+            var m = String(d.getMonth() + 1).padStart(2, '0');
+            var day = String(d.getDate()).padStart(2, '0');
+            var h = String(d.getHours()).padStart(2, '0');
+            var min = String(d.getMinutes()).padStart(2, '0');
+            var sec = String(d.getSeconds()).padStart(2, '0');
+            return y + '-' + m + '-' + day + ' ' + h + ':' + min + ':' + sec;
+        }
+
         // ---------- Toast ----------
         function showToast(msg, type, dur) {
             type = type || 'info';
@@ -1710,7 +2036,7 @@
         }
 
         // ================================================================
-        //  ★★★ 缓存管理模块 ★★★
+        //  缓存管理模块
         // ================================================================
 
         function createCacheSnapshot() {
@@ -1776,18 +2102,25 @@
             } catch (_) { return false; }
         }
 
-        // ★★★★★ 核心修复：恢复缓存并强制刷新统计页 ★★★★★
         function restoreCache(key) {
             var snapshot = getCache(key);
             if (!snapshot) {
                 showToast('缓存数据不存在或已损坏', 'error');
                 return false;
             }
+
+            if (!Array.isArray(snapshot.data)) {
+                showToast('缓存数据格式无效', 'error');
+                return false;
+            }
+
             try {
-                // 保存数据
                 var dataArr = snapshot.data || [];
                 var teachersArr = snapshot.teachers || [];
                 var classesArr = snapshot.classes || [];
+
+                if (!Array.isArray(teachersArr)) teachersArr = [];
+                if (!Array.isArray(classesArr)) classesArr = [];
 
                 var dataSaved = saveData(dataArr);
                 var teachersSaved = saveTeacherList(teachersArr);
@@ -1798,35 +2131,17 @@
                     return false;
                 }
 
-                // 验证数据是否写入成功
-                var verifiedData = getData();
-                var verifiedTeachers = getTeacherList();
-                var verifiedClasses = getClassList();
-
-                var dataOk = JSON.stringify(verifiedData) === JSON.stringify(dataArr);
-                var teachersOk = JSON.stringify(verifiedTeachers) === JSON.stringify(teachersArr);
-                var classesOk = JSON.stringify(verifiedClasses) === JSON.stringify(classesArr);
-
-                if (!dataOk || !teachersOk || !classesOk) {
-                    showToast('数据验证失败，请重试', 'error');
-                    return false;
-                }
-
                 var count = dataArr.length;
                 showToast('✅ 缓存恢复成功！共 ' + count + ' 条记录', 'success', 3000);
                 logAction('恢复缓存', '缓存名称: ' + key + ' 记录数: ' + count);
 
-                // 刷新录入页
                 renderClassTable();
-
-                // 刷新设置页
                 renderTeacherList();
                 renderClassList();
                 populateFilter();
                 renderCacheList();
                 updateAutoSaveStatus();
 
-                // ★★★ 强制重置筛选条件 ★★★
                 currentFilter = { dateStart: '', dateEnd: '', teacher: '', banji: '', jieci: '' };
                 document.getElementById('filterDateStart').value = '';
                 document.getElementById('filterDateEnd').value = '';
@@ -1834,22 +2149,12 @@
                 document.getElementById('filterBanji').value = '';
                 document.getElementById('filterJieci').value = '';
 
-                // ★★★ 强制刷新统计页 ★★★
                 renderHistory();
                 renderSummary();
+                renderServiceSummary();
                 renderAbnormal();
 
-                // 如果当前在统计页，延迟再刷新一次确保显示
-                var page2 = document.getElementById('page2');
-                if (page2 && page2.classList.contains('active')) {
-                    setTimeout(function() {
-                        renderHistory();
-                        renderSummary();
-                        renderAbnormal();
-                        showToast('📊 统计页面已更新，共 ' + count + ' 条记录', 'info', 1500);
-                    }, 150);
-                }
-
+                loadRecordsForCurrentSelection();
                 return true;
             } catch (e) {
                 console.error('恢复缓存失败:', e);
@@ -1874,10 +2179,6 @@
             renderCacheList();
         }
 
-        // ================================================================
-        //  缓存UI渲染
-        // ================================================================
-
         function renderCacheList() {
             var container = document.getElementById('cacheListContainer');
             var keys = getAllCacheKeys();
@@ -1893,8 +2194,8 @@
                 var time = parseCacheTime(key);
                 var timeStr = time ? time.toLocaleString('zh-CN') : '未知时间';
                 var recordCount = snapshot ? (snapshot.totalRecords || (snapshot.data ? snapshot.data.length : 0)) : 0;
-                var teacherCount = snapshot ? (snapshot.totalTeachers || (snapshot.teachers ? snapshot.teachers.length : 0)) :
-                    0;
+                var teacherCount = snapshot ? (snapshot.totalTeachers || (snapshot.teachers ? snapshot.teachers.length :
+                    0)) : 0;
                 var isLatest = (idx === 0);
 
                 html += '<div class="cache-list-item">' +
@@ -2060,7 +2361,7 @@
         }
 
         // ================================================================
-        // 拼音联想核心（保持原有）
+        // 拼音联想核心
         // ================================================================
 
         function createFilterFunction(dataSource) {
@@ -2364,6 +2665,7 @@
                     if (inp) inp.value = draft.remarks[cn] || '';
                 });
             }
+            if (draft.date) updateDayOfWeek();
         }
 
         function bindDraftAutoSave() {
@@ -2373,6 +2675,71 @@
                 el.removeEventListener('change', saveDraft);
                 el.addEventListener('input', saveDraft);
                 el.addEventListener('change', saveDraft);
+            });
+        }
+
+        // ================================================================
+        //  加载已有记录
+        // ================================================================
+
+        function loadRecordsForCurrentSelection() {
+            var date = document.getElementById('date').value;
+            var jieci = document.getElementById('jieci').value;
+            var weekNum = document.getElementById('weekNum').value.trim();
+            if (!date || !jieci) {
+                clearClassInputs();
+                document.getElementById('xunkeTeacher').value = '';
+                document.getElementById('loadHint').textContent = '💡 请选择日期和节次';
+                return;
+            }
+
+            var allData = getData();
+            var matched = allData.filter(function(item) {
+                if (item.date !== date) return false;
+                if (item.jieci !== jieci) return false;
+                if (weekNum && String(item.weekNum) !== weekNum) return false;
+                return true;
+            });
+
+            if (matched.length === 0) {
+                clearClassInputs();
+                document.getElementById('xunkeTeacher').value = '';
+                document.getElementById('loadHint').textContent = '📭 该时段暂无记录，可新增';
+                return;
+            }
+
+            var classNames = getClassList().map(function(c) { return c.name; });
+            classNames.forEach(function(cn) {
+                var found = matched.find(function(item) { return item.banji === cn; });
+                var teaInput = document.querySelector('.tea-input[data-class="' + cn + '"]');
+                var noteSelect = document.querySelector('.note-select[data-class="' + cn + '"]');
+                var remarkInput = document.querySelector('.remark-input[data-class="' + cn + '"]');
+                if (found) {
+                    if (teaInput) teaInput.value = found.teacher || '';
+                    if (noteSelect) noteSelect.value = found.remark || '正常';
+                    if (remarkInput) remarkInput.value = found.remarkDetail || '';
+                } else {
+                    if (teaInput) teaInput.value = '';
+                    if (noteSelect) noteSelect.value = '正常';
+                    if (remarkInput) remarkInput.value = '';
+                }
+            });
+
+            var first = matched[0];
+            document.getElementById('xunkeTeacher').value = first.xunkeTeacher || '';
+            document.getElementById('loadHint').textContent = '✅ 已加载 ' + matched.length + ' 条记录，可修改或补充';
+            saveDraft();
+        }
+
+        function clearClassInputs() {
+            var classNames = getClassList().map(function(c) { return c.name; });
+            classNames.forEach(function(cn) {
+                var teaInput = document.querySelector('.tea-input[data-class="' + cn + '"]');
+                var noteSelect = document.querySelector('.note-select[data-class="' + cn + '"]');
+                var remarkInput = document.querySelector('.remark-input[data-class="' + cn + '"]');
+                if (teaInput) teaInput.value = '';
+                if (noteSelect) noteSelect.value = '正常';
+                if (remarkInput) remarkInput.value = '';
             });
         }
 
@@ -2441,8 +2808,19 @@
             bindAutocompleteForInput(xunke, getTeacherList());
 
             var draft = loadDraft();
-            if (draft) applyDraft(draft);
+            if (draft && draft.date && draft.jieci) {
+                loadRecordsForCurrentSelection();
+                var currentDraft = loadDraft();
+                if (currentDraft && currentDraft.date === document.getElementById('date').value &&
+                    currentDraft.jieci === document.getElementById('jieci').value) {
+                    applyDraft(currentDraft);
+                }
+            } else {
+                loadRecordsForCurrentSelection();
+            }
+
             bindDraftAutoSave();
+            updateDayOfWeek();
         }
 
         // ================================================================
@@ -2526,8 +2904,10 @@
             var xunke = document.getElementById('xunkeTeacher').value.trim();
             var classList = getClassList().map(function(c) { return c.name; });
             var all = getData();
-            var news = [];
-            var warns = [];
+            var dayOfWeek = getDayOfWeek(date);
+            var nowTime = getNowTimeStr();
+            var updatedCount = 0;
+            var addedCount = 0;
 
             classList.forEach(function(cn) {
                 var tea = document.querySelector('.tea-input[data-class="' + cn + '"]').value.trim();
@@ -2535,50 +2915,73 @@
                 var remark = document.querySelector('.remark-input[data-class="' + cn + '"]').value.trim();
                 if (!tea) return;
 
-                var exists = all.some(function(i) {
-                    return i.date === date &&
-                        String(i.weekNum) === String(week) &&
-                        i.jieci === jieci &&
-                        i.banji === cn;
-                });
-                if (exists) { warns.push(cn); return; }
+                var existingIdx = -1;
+                for (var i = 0; i < all.length; i++) {
+                    var item = all[i];
+                    if (item.date === date &&
+                        String(item.weekNum) === String(week) &&
+                        item.jieci === jieci &&
+                        item.banji === cn) {
+                        existingIdx = i;
+                        break;
+                    }
+                }
 
-                news.push({
-                    id: genId(),
-                    date: date,
-                    weekNum: String(week),
-                    jieci: jieci,
-                    banji: cn,
-                    teacher: tea,
-                    xunkeTeacher: xunke,
-                    remark: note,
-                    remarkDetail: remark,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                });
+                if (existingIdx !== -1) {
+                    var old = all[existingIdx];
+                    old.teacher = tea;
+                    old.remark = note;
+                    old.remarkDetail = remark;
+                    old.xunkeTeacher = xunke;
+                    old.dayOfWeek = dayOfWeek;
+                    old.updatedAt = new Date().toISOString();
+                    old.recordTime = nowTime;
+                    updatedCount++;
+                } else {
+                    all.push({
+                        id: genId(),
+                        date: date,
+                        dayOfWeek: dayOfWeek,
+                        weekNum: String(week),
+                        jieci: jieci,
+                        banji: cn,
+                        teacher: tea,
+                        xunkeTeacher: xunke,
+                        remark: note,
+                        remarkDetail: remark,
+                        recordTime: nowTime,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    });
+                    addedCount++;
+                }
             });
 
-            if (warns.length) showToast('跳过重复记录: ' + warns.join('、'), 'warning', 3500);
-            if (news.length === 0) {
-                if (warns.length) showToast('所有班级均已存在记录，无需重复保存', 'info');
-                else showToast('未填写任何班级的授课教师', 'warning');
+            if (updatedCount === 0 && addedCount === 0) {
+                showToast('没有可保存的更改', 'info');
                 return;
             }
 
-            all.push.apply(all, news);
             if (saveData(all)) {
-                showToast('✅ 保存成功！共录入 ' + news.length + ' 个班级', 'success');
-                logAction('保存记录', '日期 ' + date + ' 节次 ' + jieci + ' 共 ' + news.length + ' 条');
+                var msg = '✅ 保存成功！';
+                if (addedCount > 0) msg += ' 新增 ' + addedCount + ' 条';
+                if (updatedCount > 0) msg += ' 更新 ' + updatedCount + ' 条';
+                showToast(msg, 'success');
+                logAction('保存记录', '日期 ' + date + ' 节次 ' + jieci + ' 新增 ' + addedCount + ' 更新 ' + updatedCount);
                 renderHistory();
                 renderSummary();
+                renderServiceSummary();
                 renderAbnormal();
                 updateAutoSaveStatus();
+                loadRecordsForCurrentSelection();
                 saveDraft();
+            } else {
+                showToast('保存失败，请检查存储空间', 'error');
             }
         }
 
         // ================================================================
-        //  统计渲染
+        //  统计渲染 (固定表头+第一列已在CSS中实现)
         // ================================================================
 
         var currentFilter = { dateStart: '', dateEnd: '', teacher: '', banji: '', jieci: '' };
@@ -2598,7 +3001,7 @@
             tbody.innerHTML = '';
             if (filtered.length === 0) {
                 tbody.innerHTML =
-                    '<tr class="empty-row"><td colspan="10">📭 暂无匹配记录，请前往"录入"页添加数据</td></tr>';
+                    '<tr class="empty-row"><td colspan="12">📭 暂无匹配记录，请前往"录入"页添加数据</td></tr>';
                 updateStats(filtered);
                 return;
             }
@@ -2606,9 +3009,12 @@
                     .banji); });
             sorted.forEach(function(item, idx) {
                 var tr = document.createElement('tr');
+                var recordTime = item.recordTime || item.createdAt ? new Date(item.createdAt).toLocaleString('zh-CN') : '';
                 tr.innerHTML =
                     '<td>' + (idx + 1) + '</td>' +
                     '<td>' + escapeHtml(item.date) + '</td>' +
+                    '<td style="color:#2563eb;font-weight:500;">' + escapeHtml(item.dayOfWeek || getDayOfWeek(item
+                        .date)) + '</td>' +
                     '<td>' + escapeHtml(item.weekNum) + '</td>' +
                     '<td>' + escapeHtml(item.jieci) + '</td>' +
                     '<td>' + escapeHtml(item.banji) + '</td>' +
@@ -2616,6 +3022,7 @@
                     '<td>' + escapeHtml(item.xunkeTeacher) + '</td>' +
                     '<td>' + escapeHtml(item.remark) + '</td>' +
                     '<td>' + escapeHtml(item.remarkDetail || '') + '</td>' +
+                    '<td style="font-size:12px;color:#475569;">' + escapeHtml(recordTime) + '</td>' +
                     '<td>' +
                     '<button class="edit-btn" data-id="' + item.id + '">编辑</button>' +
                     '<button class="del-btn" data-id="' + item.id + '">删除</button>' +
@@ -2642,8 +3049,10 @@
                         logAction('删除记录', item.date + ' ' + item.jieci + ' ' + item.banji);
                         renderHistory();
                         renderSummary();
+                        renderServiceSummary();
                         renderAbnormal();
                         updateAutoSaveStatus();
+                        loadRecordsForCurrentSelection();
                     }
                 });
             });
@@ -2659,11 +3068,14 @@
             document.getElementById('totalDays').textContent = days.size;
         }
 
+        // ★★★ 教师课时汇总（含点击查看详情） ★★★
         function renderSummary() {
             var list = getData();
             var wrap = document.getElementById('summaryWrap');
-            if (list.length === 0) { wrap.innerHTML =
-                    '<p style="text-align:center;color:#94a3b8;padding:20px 0;">暂无数据</p>'; return; }
+            if (list.length === 0) {
+                wrap.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:20px 0;">暂无数据</p>';
+                return;
+            }
             var stat = {};
             list.forEach(function(item) {
                 var t = item.teacher || '未知';
@@ -2680,14 +3092,15 @@
                     '</th>'; }).join('') + '<th>总课时</th></tr></thead><tbody>';
             Object.keys(stat).sort().forEach(function(t) {
                 var total = 0;
-                html += '<tr><td style="font-weight:600">' + escapeHtml(t) + '</td>';
+                html += '<tr><td style="font-weight:600;cursor:pointer;color:#2563eb;text-decoration:underline;" class="teacher-name-click" data-teacher="' +
+                    escapeHtml(t) + '">' + escapeHtml(t) + ' 👆</td>';
                 ALL_JIECI.forEach(function(j) {
                     var n = stat[t][j] ? stat[t][j].num : 0;
                     total += n;
                     html += '<td>' + n + '</td>';
                 });
                 html += '<td class="total-cell">' + total + '</td></tr>';
-                html += '<tr class="class-row"><td>对应班级</td>';
+                html += '<tr class="class-row"><td style="font-size:11px;color:#475569;">对应班级</td>';
                 ALL_JIECI.forEach(function(j) {
                     var cls = stat[t][j] ? stat[t][j].classList : [];
                     html += '<td>' + cls.join('、') + '</td>';
@@ -2696,6 +3109,169 @@
             });
             html += '</tbody></table>';
             wrap.innerHTML = html;
+
+            wrap.querySelectorAll('.teacher-name-click').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var teacher = this.dataset.teacher;
+                    showTeacherDetail(teacher);
+                });
+            });
+        }
+
+        // ★★★ 显示教师详情模态框 ★★★
+        function showTeacherDetail(teacherName) {
+            var list = getData();
+            var records = list.filter(function(item) { return item.teacher === teacherName; });
+            if (records.length === 0) {
+                showToast('该教师暂无记录', 'info');
+                return;
+            }
+            records.sort(function(a, b) { return a.date.localeCompare(b.date) || a.jieci.localeCompare(b.jieci); });
+
+            var title = document.getElementById('teacherDetailTitle');
+            title.textContent = '📋 ' + teacherName + ' 巡课明细';
+
+            var summary = document.getElementById('teacherDetailSummary');
+            var total = records.length;
+            var weeks = new Set(records.map(function(r) { return r.weekNum; }));
+            summary.textContent = '共 ' + total + ' 条记录，涉及 ' + weeks.size + ' 周';
+
+            var tbody = document.getElementById('teacherDetailBody');
+            tbody.innerHTML = '';
+            records.forEach(function(item) {
+                var tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td>' + escapeHtml(item.date) + '</td>' +
+                    '<td>' + escapeHtml(item.dayOfWeek || getDayOfWeek(item.date)) + '</td>' +
+                    '<td>' + escapeHtml(item.weekNum) + '</td>' +
+                    '<td>' + escapeHtml(item.jieci) + '</td>' +
+                    '<td>' + escapeHtml(item.banji) + '</td>' +
+                    '<td>' + escapeHtml(item.remark) + '</td>' +
+                    '<td>' + escapeHtml(item.remarkDetail || '') + '</td>';
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('teacherDetailModal').classList.add('show');
+        }
+
+        // ★★★ 课后服务统计汇总（包含所有课时，含周末） ★★★
+        var currentServiceWeek = 'all';
+
+        function renderServiceSummary() {
+            var list = getData();
+            var wrap = document.getElementById('serviceSummaryWrap');
+            var filterDiv = document.getElementById('serviceWeekFilter');
+
+            var weeks = new Set();
+            list.forEach(function(item) {
+                if (item.weekNum) weeks.add(String(item.weekNum));
+            });
+            var weekArray = Array.from(weeks).sort(function(a, b) {
+                var na = parseInt(a),
+                    nb = parseInt(b);
+                if (!isNaN(na) && !isNaN(nb)) return na - nb;
+                return a.localeCompare(b);
+            });
+
+            filterDiv.innerHTML = '';
+            var btnAll = document.createElement('button');
+            btnAll.className = 'btn-sm ' + (currentServiceWeek === 'all' ? 'btn-primary' : 'btn-gray');
+            btnAll.dataset.week = 'all';
+            btnAll.textContent = '全部';
+            filterDiv.appendChild(btnAll);
+
+            weekArray.forEach(function(w) {
+                var btn = document.createElement('button');
+                btn.className = 'btn-sm ' + (currentServiceWeek === w ? 'btn-primary' : 'btn-gray');
+                btn.dataset.week = w;
+                btn.textContent = '第' + w + '周';
+                filterDiv.appendChild(btn);
+            });
+
+            filterDiv.onclick = function(e) {
+                var target = e.target.closest('button');
+                if (!target || !target.dataset.week) return;
+                currentServiceWeek = target.dataset.week;
+                renderServiceSummary();
+            };
+
+            var filteredList = list;
+            if (currentServiceWeek !== 'all') {
+                filteredList = list.filter(function(item) {
+                    return String(item.weekNum) === currentServiceWeek;
+                });
+            }
+
+            var stats = {};
+            filteredList.forEach(function(item) {
+                var teacher = item.teacher || '';
+                if (!teacher) return;
+                // ★★★ 已移除周末过滤，包含所有课时（含周末） ★★★
+                if (!stats[teacher]) {
+                    stats[teacher] = {};
+                    ALL_JIECI.forEach(function(j) {
+                        stats[teacher][j] = 0;
+                    });
+                }
+                var jieci = item.jieci || '';
+                if (ALL_JIECI.indexOf(jieci) !== -1) {
+                    stats[teacher][jieci] = (stats[teacher][jieci] || 0) + 1;
+                }
+            });
+
+            var validTeachers = Object.keys(stats).filter(function(name) {
+                var s = stats[name];
+                var total = 0;
+                ALL_JIECI.forEach(function(j) { total += (s[j] || 0); });
+                return total > 0;
+            }).sort();
+
+            if (validTeachers.length === 0) {
+                wrap.innerHTML = '<div class="empty-hint">📭 该周暂无课时数据</div>';
+                return;
+            }
+
+            var headerRow = ['姓名'];
+            ALL_JIECI.forEach(function(j) {
+                headerRow.push(j);
+            });
+            headerRow.push('总课时');
+
+            var tableHtml = '<table class="data-table"><thead><tr>';
+            headerRow.forEach(function(h) {
+                tableHtml += '<th>' + escapeHtml(h) + '</th>';
+            });
+            tableHtml += '</tr></thead><tbody>';
+
+            var totals = {};
+            ALL_JIECI.forEach(function(j) { totals[j] = 0; });
+
+            validTeachers.forEach(function(name) {
+                var s = stats[name];
+                var total = 0;
+                ALL_JIECI.forEach(function(j) {
+                    var val = s[j] || 0;
+                    totals[j] += val;
+                    total += val;
+                });
+                tableHtml += '<tr><td style="font-weight:600;text-align:left;">' + escapeHtml(name) + '</td>';
+                ALL_JIECI.forEach(function(j) {
+                    tableHtml += '<td>' + (s[j] || 0) + '</td>';
+                });
+                tableHtml += '<td class="total-cell">' + total + '</td></tr>';
+            });
+
+            var grandTotal = 0;
+            tableHtml += '<tr class="total-row"><td style="text-align:right;">📊 合计</td>';
+            ALL_JIECI.forEach(function(j) {
+                var val = totals[j] || 0;
+                grandTotal += val;
+                tableHtml += '<td>' + val + '</td>';
+            });
+            tableHtml += '<td class="total-cell">' + grandTotal + '</td></tr>';
+
+            tableHtml += '</tbody></table>';
+            wrap.innerHTML = tableHtml;
         }
 
         function renderAbnormal() {
@@ -2705,11 +3281,12 @@
             if (abnormal.length === 0) { wrap.innerHTML =
                     '<p style="text-align:center;color:#94a3b8;padding:12px 0;">✅ 暂无异常</p>'; return; }
             var html =
-                '<table class="data-table"><thead><tr><th>日期</th><th>班级</th><th>授课教师</th><th>情况</th><th>备注</th></tr></thead><tbody>';
+                '<table class="data-table"><thead><tr><th>日期</th><th>星期</th><th>班级</th><th>授课教师</th><th>情况</th><th>备注</th></tr></thead><tbody>';
             abnormal.forEach(function(i) {
-                html += '<tr><td>' + escapeHtml(i.date) + '</td><td>' + escapeHtml(i.banji) + '</td><td>' + escapeHtml(i
-                    .teacher) + '</td><td style="color:#dc2626;font-weight:600;">' + escapeHtml(i.remark) +
-                    '</td><td>' + escapeHtml(i.remarkDetail || '') + '</td></tr>';
+                html += '<tr><td>' + escapeHtml(i.date) + '</td><td style="color:#2563eb;">' + escapeHtml(i
+                        .dayOfWeek || getDayOfWeek(i.date)) + '</td><td>' + escapeHtml(i.banji) + '</td><td>' +
+                    escapeHtml(i.teacher) + '</td><td style="color:#dc2626;font-weight:600;">' + escapeHtml(i
+                        .remark) + '</td><td>' + escapeHtml(i.remarkDetail || '') + '</td></tr>';
             });
             html += '</tbody></table>';
             wrap.innerHTML = html;
@@ -2759,6 +3336,8 @@
             if (!item) { showToast('记录不存在', 'error'); return; }
             editingId = id;
             document.getElementById('editDate').value = item.date || '';
+            var dow = item.dayOfWeek || getDayOfWeek(item.date);
+            document.getElementById('editDayOfWeek').value = dow;
             document.getElementById('editWeekNum').value = item.weekNum || '';
             document.getElementById('editJieci').value = item.jieci || '';
             document.getElementById('editBanji').value = item.banji || '';
@@ -2781,7 +3360,9 @@
             }
             if (idx === -1) { showToast('记录不存在', 'error'); return; }
             var item = list[idx];
-            item.date = document.getElementById('editDate').value;
+            var newDate = document.getElementById('editDate').value;
+            item.date = newDate;
+            item.dayOfWeek = getDayOfWeek(newDate);
             item.weekNum = document.getElementById('editWeekNum').value.trim();
             item.jieci = document.getElementById('editJieci').value;
             item.teacher = document.getElementById('editTeacher').value.trim();
@@ -2789,16 +3370,34 @@
             item.remark = document.getElementById('editRemark').value;
             item.remarkDetail = document.getElementById('editRemarkDetail').value.trim();
             item.updatedAt = new Date().toISOString();
+            item.recordTime = getNowTimeStr();
             if (saveData(list)) {
                 showToast('✅ 已更新', 'success');
                 logAction('编辑记录', item.date + ' ' + item.jieci + ' ' + item.banji);
                 closeEdit();
                 renderHistory();
                 renderSummary();
+                renderServiceSummary();
                 renderAbnormal();
                 updateAutoSaveStatus();
+                loadRecordsForCurrentSelection();
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var editDateInput = document.getElementById('editDate');
+            var editDayInput = document.getElementById('editDayOfWeek');
+            if (editDateInput && editDayInput) {
+                editDateInput.addEventListener('change', function() {
+                    var dow = getDayOfWeek(this.value);
+                    editDayInput.value = dow;
+                });
+                editDateInput.addEventListener('input', function() {
+                    var dow = getDayOfWeek(this.value);
+                    editDayInput.value = dow;
+                });
+            }
+        });
 
         // ================================================================
         //  筛选
@@ -2857,19 +3456,23 @@
         function exportCSV() {
             var list = getData();
             if (list.length === 0) { showToast('无数据可导出', 'warning'); return; }
-            var header = ['序号', '日期', '周数', '节次', '班级', '授课教师', '巡课教师', '巡课情况', '备注'];
+            var header = ['序号', '日期', '星期', '周数', '节次', '班级', '授课教师', '巡课教师', '巡课情况', '备注', '巡课时间'];
             var rows = [header];
             list.forEach(function(item, idx) {
+                var recordTime = item.recordTime || (item.createdAt ? new Date(item.createdAt).toLocaleString(
+                    'zh-CN') : '');
                 rows.push([
                     idx + 1,
                     item.date || '',
+                    item.dayOfWeek || getDayOfWeek(item.date) || '',
                     item.weekNum || '',
                     item.jieci || '',
                     item.banji || '',
                     item.teacher || '',
                     item.xunkeTeacher || '',
                     item.remark || '正常',
-                    item.remarkDetail || ''
+                    item.remarkDetail || '',
+                    recordTime
                 ]);
             });
             var csvContent = rows.map(function(row) { return row.map(function(cell) { return '"' + String(cell).replace(/"/g,
@@ -2902,13 +3505,19 @@
         }
 
         function saveArrayBufferInApp(arrayBuffer, fileName) {
-            console.log('saveArrayBufferInApp called, fileName:', fileName);
             var paths = [
                 '_downloads/',
                 'file:///storage/emulated/0/Download/',
                 '_doc/Download/',
                 '_doc/'
             ];
+            var btn = document.getElementById('exportAllBtn');
+
+            function resetExportButton() {
+                if (btn) { btn.disabled = false;
+                    btn.textContent = '📊 导出完整数据（明细+周明细+汇总+周汇总+课后服务全部/每周汇总）'; }
+            }
+
             tryWritePath(0);
 
             function tryWritePath(index) {
@@ -2918,12 +3527,9 @@
                     return;
                 }
                 var path = paths[index];
-                console.log('Trying path:', path);
                 plus.io.resolveLocalFileSystemURL(path, function(entry) {
-                    console.log('Directory found:', path);
                     writeToDir(entry);
                 }, function(err) {
-                    console.warn('Directory not found:', path, err);
                     tryWritePath(index + 1);
                 });
             }
@@ -2967,39 +3573,168 @@
                     resetExportButton();
                 });
             }
-
-            function resetExportButton() {
-                var btn = document.getElementById('exportExcelBtn') || document.getElementById('exportAllBtn');
-                if (btn) { btn.disabled = false;
-                    btn.textContent = '📊 导出全部Excel（明细+汇总）'; }
-            }
         }
 
-        function buildExcelWorkbook(list) {
-            var wb = XLSX.utils.book_new();
-
-            var detailHeader = ['序号', '日期', '周数', '节次', '班级', '授课教师', '巡课教师', '巡课情况', '备注'];
-            var detailRows = [detailHeader];
-            list.forEach(function(item, idx) {
-                detailRows.push([
+        // ★★★ 获取每周明细数据 ★★★
+        function getWeekDetailSheetData(week) {
+            var list = getData();
+            var weekData = list.filter(function(item) { return String(item.weekNum) === week; });
+            if (weekData.length === 0) return null;
+            var header = ['序号', '日期', '星期', '周数', '节次', '班级', '授课教师', '巡课教师', '巡课情况', '备注', '巡课时间'];
+            var rows = [header];
+            weekData.forEach(function(item, idx) {
+                var recordTime = item.recordTime || (item.createdAt ? new Date(item.createdAt).toLocaleString(
+                    'zh-CN') : '');
+                rows.push([
                     idx + 1,
                     item.date || '',
+                    item.dayOfWeek || getDayOfWeek(item.date) || '',
                     String(item.weekNum || ''),
                     item.jieci || '',
                     item.banji || '',
                     item.teacher || '',
                     item.xunkeTeacher || '',
                     item.remark || '正常',
-                    item.remarkDetail || ''
+                    item.remarkDetail || '',
+                    recordTime
+                ]);
+            });
+            return rows;
+        }
+
+        // ★★★ 课后服务汇总数据（包含所有课时，含周末） ★★★
+        function getServiceSheetData(weekFilter) {
+            weekFilter = weekFilter || 'all';
+            var list = getData();
+            if (weekFilter !== 'all') {
+                list = list.filter(function(item) { return String(item.weekNum) === weekFilter; });
+            }
+
+            var stats = {};
+            list.forEach(function(item) {
+                var teacher = item.teacher || '';
+                if (!teacher) return;
+                // ★★★ 已移除周末过滤，包含所有课时（含周末） ★★★
+                if (!stats[teacher]) {
+                    stats[teacher] = {};
+                    ALL_JIECI.forEach(function(j) {
+                        stats[teacher][j] = 0;
+                    });
+                }
+                var jieci = item.jieci || '';
+                if (ALL_JIECI.indexOf(jieci) !== -1) {
+                    stats[teacher][jieci] = (stats[teacher][jieci] || 0) + 1;
+                }
+            });
+
+            var validTeachers = Object.keys(stats).filter(function(name) {
+                var s = stats[name];
+                var total = 0;
+                ALL_JIECI.forEach(function(j) { total += (s[j] || 0); });
+                return total > 0;
+            }).sort();
+
+            var data = [];
+            var totals = {};
+            ALL_JIECI.forEach(function(j) { totals[j] = 0; });
+            validTeachers.forEach(function(name) {
+                var s = stats[name];
+                var total = 0;
+                var row = {};
+                row['姓名'] = name;
+                ALL_JIECI.forEach(function(j) {
+                    var val = s[j] || 0;
+                    row[j] = val;
+                    totals[j] += val;
+                    total += val;
+                });
+                row['总课时'] = total;
+                data.push(row);
+            });
+            if (validTeachers.length > 0) {
+                var totalRow = { '姓名': '合计' };
+                ALL_JIECI.forEach(function(j) {
+                    totalRow[j] = totals[j];
+                });
+                var grandTotal = 0;
+                ALL_JIECI.forEach(function(j) { grandTotal += totals[j]; });
+                totalRow['总课时'] = grandTotal;
+                data.push(totalRow);
+            }
+
+            var dates = list.map(function(item) { return item.date; }).filter(function(d) { return d; });
+            var startDate = dates.length ? dates.reduce(function(a, b) { return a < b ? a : b; }) : '';
+            var endDate = dates.length ? dates.reduce(function(a, b) { return a > b ? a : b; }) : '';
+
+            var rows = [];
+            var emptyRow = Array(SERVICE_TABLE_COLS).fill('');
+            var titleRow = emptyRow.slice();
+            titleRow[0] = '岷县二中值班及加班、常规统计表';
+            rows.push(titleRow);
+
+            var infoRow = emptyRow.slice();
+            infoRow[0] = '部门：';
+            infoRow[1] = '高二2部';
+            infoRow[2] = '值班、加班时间：' + startDate + ' 至 ' + endDate;
+            rows.push(infoRow);
+
+            var header = ['姓名'];
+            ALL_JIECI.forEach(function(j) { header.push(j); });
+            header.push('总课时');
+            rows.push(header);
+
+            data.forEach(function(row) {
+                var rowArr = [];
+                rowArr.push(row['姓名'] || '');
+                ALL_JIECI.forEach(function(j) {
+                    rowArr.push(row[j] !== undefined ? row[j] : '');
+                });
+                rowArr.push(row['总课时'] !== undefined ? row['总课时'] : '');
+                rows.push(rowArr);
+            });
+
+            var footerRow = emptyRow.slice();
+            footerRow[4] = '统计人：';
+            footerRow[6] = '分管领导：';
+            rows.push(footerRow);
+
+            return rows;
+        }
+
+        // ★★★ 构建完整工作簿 ★★★
+        function buildFullWorkbook() {
+            var list = getData();
+            var wb = XLSX.utils.book_new();
+
+            // 1. 巡课明细（全部）
+            var detailHeader = ['序号', '日期', '星期', '周数', '节次', '班级', '授课教师', '巡课教师', '巡课情况', '备注', '巡课时间'];
+            var detailRows = [detailHeader];
+            list.forEach(function(item, idx) {
+                var recordTime = item.recordTime || (item.createdAt ? new Date(item.createdAt).toLocaleString(
+                    'zh-CN') : '');
+                detailRows.push([
+                    idx + 1,
+                    item.date || '',
+                    item.dayOfWeek || getDayOfWeek(item.date) || '',
+                    String(item.weekNum || ''),
+                    item.jieci || '',
+                    item.banji || '',
+                    item.teacher || '',
+                    item.xunkeTeacher || '',
+                    item.remark || '正常',
+                    item.remarkDetail || '',
+                    recordTime
                 ]);
             });
             var ws1 = XLSX.utils.aoa_to_sheet(detailRows);
             ws1['!cols'] = [
-                { wch: 6 }, { wch: 12 }, { wch: 6 }, { wch: 14 },
-                { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 20 }
+                { wch: 6 }, { wch: 12 }, { wch: 8 }, { wch: 6 },
+                { wch: 14 }, { wch: 12 }, { wch: 12 }, { wch: 12 },
+                { wch: 10 }, { wch: 20 }, { wch: 20 }
             ];
             XLSX.utils.book_append_sheet(wb, ws1, '巡课明细');
 
+            // 2. 教师课时汇总（含班级）
             var stat = {};
             list.forEach(function(item) {
                 var t = item.teacher || '未知教师';
@@ -3012,7 +3747,6 @@
                 var b = item.banji || '';
                 if (b && !stat[t][j].classList.includes(b)) stat[t][j].classList.push(b);
             });
-
             var sumHeader = ['教师姓名'];
             ALL_JIECI.forEach(function(j) { sumHeader.push(j + '(课时)'); });
             sumHeader.push('总课时');
@@ -3039,11 +3773,135 @@
             ws2['!cols'] = [{ wch: 14 }].concat(ALL_JIECI.map(function() { return { wch: 10 }; })).concat({ wch: 10 });
             XLSX.utils.book_append_sheet(wb, ws2, '教师汇总');
 
+            // 3. 每周教师总课时汇总
+            var weeklyStat = {};
+            var allWeeks = new Set();
+            var allTeachers = new Set();
+            list.forEach(function(item) {
+                var week = item.weekNum || '未知周';
+                var teacher = item.teacher || '未知教师';
+                allWeeks.add(week);
+                allTeachers.add(teacher);
+                if (!weeklyStat[week]) weeklyStat[week] = {};
+                if (!weeklyStat[week][teacher]) weeklyStat[week][teacher] = 0;
+                weeklyStat[week][teacher] += 1;
+            });
+            var sortedWeeks = Array.from(allWeeks).sort(function(a, b) {
+                var na = parseInt(a),
+                    nb = parseInt(b);
+                if (!isNaN(na) && !isNaN(nb)) return na - nb;
+                return String(a).localeCompare(String(b));
+            });
+            var sortedTeachers = Array.from(allTeachers).sort();
+            var weekHeader = ['教师 \\ 周数'];
+            sortedWeeks.forEach(function(w) { weekHeader.push('第' + w + '周'); });
+            weekHeader.push('总课时');
+            var weekRows = [weekHeader];
+            sortedTeachers.forEach(function(teacher) {
+                var row = [teacher];
+                var total = 0;
+                sortedWeeks.forEach(function(week) {
+                    var count = (weeklyStat[week] && weeklyStat[week][teacher]) || 0;
+                    total += count;
+                    row.push(count);
+                });
+                row.push(total);
+                weekRows.push(row);
+            });
+            var totalRow = ['📊 合计'];
+            sortedWeeks.forEach(function(week) {
+                var weekTotal = 0;
+                sortedTeachers.forEach(function(teacher) {
+                    weekTotal += (weeklyStat[week] && weeklyStat[week][teacher]) || 0;
+                });
+                totalRow.push(weekTotal);
+            });
+            var grandTotal = 0;
+            sortedTeachers.forEach(function(teacher) {
+                sortedWeeks.forEach(function(week) {
+                    grandTotal += (weeklyStat[week] && weeklyStat[week][teacher]) || 0;
+                });
+            });
+            totalRow.push(grandTotal);
+            weekRows.push(totalRow);
+            var ws3 = XLSX.utils.aoa_to_sheet(weekRows);
+            ws3['!cols'] = [{ wch: 14 }].concat(sortedWeeks.map(function() { return { wch: 8 }; })).concat({ wch: 10 });
+            XLSX.utils.book_append_sheet(wb, ws3, '每周汇总');
+
+            // 4. 每周明细（按周拆分）
+            var weeksSet = new Set();
+            list.forEach(function(item) {
+                if (item.weekNum) weeksSet.add(String(item.weekNum));
+            });
+            var sortedWeeksDetail = Array.from(weeksSet).sort(function(a, b) {
+                return parseInt(a) - parseInt(b);
+            });
+            sortedWeeksDetail.forEach(function(week) {
+                var weekData = list.filter(function(item) { return String(item.weekNum) === week; });
+                if (weekData.length === 0) return;
+                var detailHeader2 = ['序号', '日期', '星期', '周数', '节次', '班级', '授课教师', '巡课教师', '巡课情况', '备注', '巡课时间'];
+                var detailRows2 = [detailHeader2];
+                weekData.forEach(function(item, idx) {
+                    var recordTime = item.recordTime || (item.createdAt ? new Date(item.createdAt).toLocaleString(
+                        'zh-CN') : '');
+                    detailRows2.push([
+                        idx + 1,
+                        item.date || '',
+                        item.dayOfWeek || getDayOfWeek(item.date) || '',
+                        String(item.weekNum || ''),
+                        item.jieci || '',
+                        item.banji || '',
+                        item.teacher || '',
+                        item.xunkeTeacher || '',
+                        item.remark || '正常',
+                        item.remarkDetail || '',
+                        recordTime
+                    ]);
+                });
+                var wsWeek = XLSX.utils.aoa_to_sheet(detailRows2);
+                wsWeek['!cols'] = [
+                    { wch: 6 }, { wch: 12 }, { wch: 8 }, { wch: 6 },
+                    { wch: 14 }, { wch: 12 }, { wch: 12 }, { wch: 12 },
+                    { wch: 10 }, { wch: 20 }, { wch: 20 }
+                ];
+                XLSX.utils.book_append_sheet(wb, wsWeek, '第' + week + '周明细');
+            });
+
+            // 5. 课后服务全部汇总（包含所有课时，含周末）
+            var serviceRows = getServiceSheetData('all');
+            var wsServiceAll = XLSX.utils.aoa_to_sheet(serviceRows);
+            var lastCol = SERVICE_TABLE_COLS - 1;
+            wsServiceAll['!merges'] = [
+                { s: { r: 0, c: 0 }, e: { r: 0, c: lastCol } },
+                { s: { r: 1, c: 0 }, e: { r: 1, c: lastCol } }
+            ];
+            var colWidths = [{ wch: 12 }];
+            ALL_JIECI.forEach(function() { colWidths.push({ wch: 8 }); });
+            colWidths.push({ wch: 10 });
+            wsServiceAll['!cols'] = colWidths;
+            XLSX.utils.book_append_sheet(wb, wsServiceAll, '课后服务全部汇总');
+
+            // 6. 课后服务每周汇总（包含所有课时，含周末）
+            sortedWeeks.forEach(function(week) {
+                var rows = getServiceSheetData(week);
+                var ws = XLSX.utils.aoa_to_sheet(rows);
+                ws['!merges'] = [
+                    { s: { r: 0, c: 0 }, e: { r: 0, c: lastCol } },
+                    { s: { r: 1, c: 0 }, e: { r: 1, c: lastCol } }
+                ];
+                var colWidths = [{ wch: 12 }];
+                ALL_JIECI.forEach(function() { colWidths.push({ wch: 8 }); });
+                colWidths.push({ wch: 10 });
+                ws['!cols'] = colWidths;
+                XLSX.utils.book_append_sheet(wb, ws, '课后服务第' + week + '周汇总');
+            });
+
             return wb;
         }
 
-        function exportAllExcel() {
-            var btn = document.getElementById('exportExcelBtn') || document.getElementById('exportAllBtn');
+        // ★★★ 导出完整数据 ★★★
+        function exportFullData() {
+            var btn = document.getElementById('exportAllBtn');
             if (btn) { btn.disabled = true;
                 btn.textContent = '⏳ 生成中...'; }
 
@@ -3052,18 +3910,18 @@
                     if (!checkXLSX()) {
                         exportCSV();
                         if (btn) { btn.disabled = false;
-                            btn.textContent = '📊 导出全部Excel（明细+汇总）'; }
+                            btn.textContent = '📊 导出完整数据（明细+周明细+汇总+周汇总+课后服务全部/每周汇总）'; }
                         return;
                     }
                     var list = getData();
                     if (list.length === 0) {
                         showToast('无数据可导出', 'warning');
                         if (btn) { btn.disabled = false;
-                            btn.textContent = '📊 导出全部Excel（明细+汇总）'; }
+                            btn.textContent = '📊 导出完整数据（明细+周明细+汇总+周汇总+课后服务全部/每周汇总）'; }
                         return;
                     }
 
-                    var wb = buildExcelWorkbook(list);
+                    var wb = buildFullWorkbook();
 
                     var now = new Date();
                     var timeStr = now.getFullYear() +
@@ -3072,10 +3930,9 @@
                         String(now.getHours()).padStart(2, '0') +
                         String(now.getMinutes()).padStart(2, '0') +
                         String(now.getSeconds()).padStart(2, '0');
-                    var fileName = '巡课记录_' + timeStr + '.xlsx';
+                    var fileName = '巡课完整数据_' + timeStr + '.xlsx';
 
                     if (isAppEnvironment()) {
-                        console.log('App环境，准备导出Excel');
                         var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
                         var arrayBuffer = wbout.buffer;
                         saveArrayBufferInApp(arrayBuffer, fileName);
@@ -3083,16 +3940,16 @@
                         var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
                         var blob = new Blob([wbout], { type: 'application/octet-stream' });
                         fallbackDownload(blob, fileName);
-                        showToast('📊 导出成功', 'success');
-                        logAction('导出Excel', '全部数据');
+                        showToast('📊 完整数据导出成功', 'success');
+                        logAction('导出完整数据', '含明细、周明细、汇总、周汇总、课后服务全部/每周汇总(含周末)');
                         if (btn) { btn.disabled = false;
-                            btn.textContent = '📊 导出全部Excel（明细+汇总）'; }
+                            btn.textContent = '📊 导出完整数据（明细+周明细+汇总+周汇总+课后服务全部/每周汇总）'; }
                     }
                 } catch (e) {
                     console.error('导出异常:', e);
                     showToast('导出失败: ' + e.message, 'error');
                     if (btn) { btn.disabled = false;
-                        btn.textContent = '📊 导出全部Excel（明细+汇总）'; }
+                        btn.textContent = '📊 导出完整数据（明细+周明细+汇总+周汇总+课后服务全部/每周汇总）'; }
                 }
             }, 100);
         }
@@ -3134,6 +3991,7 @@
                         renderTeacherList();
                         renderClassTable();
                         populateFilter();
+                        renderServiceSummary();
                     }
                 });
             });
@@ -3154,6 +4012,7 @@
                 renderTeacherList();
                 renderClassTable();
                 populateFilter();
+                renderServiceSummary();
                 var input = document.getElementById('newTeacherInput');
                 if (input) input.value = '';
             }
@@ -3295,6 +4154,7 @@
                     if (target === 'page2') {
                         renderHistory();
                         renderSummary();
+                        renderServiceSummary();
                         renderAbnormal();
                     }
                     if (target === 'page3') {
@@ -3418,14 +4278,48 @@
         }
 
         // ================================================================
+        //  模态框控制
+        // ================================================================
+
+        document.getElementById('closeTeacherDetailBtn').addEventListener('click', function() {
+            document.getElementById('teacherDetailModal').classList.remove('show');
+        });
+        document.getElementById('teacherDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        });
+
+        // ================================================================
         //  初始化
         // ================================================================
 
         function initApp() {
             document.getElementById('date').value = getToday();
+            updateDayOfWeek();
+            document.getElementById('date').addEventListener('change', function() {
+                updateDayOfWeek();
+                loadRecordsForCurrentSelection();
+            });
+            document.getElementById('date').addEventListener('input', function() {
+                updateDayOfWeek();
+                loadRecordsForCurrentSelection();
+            });
+
+            document.getElementById('jieci').addEventListener('change', function() {
+                loadRecordsForCurrentSelection();
+            });
+            document.getElementById('weekNum').addEventListener('change', function() {
+                loadRecordsForCurrentSelection();
+            });
+            document.getElementById('weekNum').addEventListener('input', function() {
+                loadRecordsForCurrentSelection();
+            });
+
             renderClassTable();
             renderHistory();
             renderSummary();
+            renderServiceSummary();
             renderAbnormal();
             renderTeacherList();
             renderClassList();
@@ -3441,8 +4335,7 @@
             document.getElementById('classSearch').addEventListener('input', renderClassList);
 
             document.getElementById('saveBtn').addEventListener('click', handleSave);
-            document.getElementById('exportExcelBtn').addEventListener('click', exportAllExcel);
-            document.getElementById('exportAllBtn').addEventListener('click', exportAllExcel);
+            document.getElementById('exportAllBtn').addEventListener('click', exportFullData);
 
             document.getElementById('addClassBtn').addEventListener('click', addClass);
             document.getElementById('newClassInput').addEventListener('keydown', function(e) { if (e.key === 'Enter')
@@ -3462,14 +4355,6 @@
 
             document.getElementById('clearLogBtn').addEventListener('click', clearLogs);
             document.getElementById('clearAllDataBtn').addEventListener('click', clearAllData);
-
-            document.getElementById('jieci').addEventListener('change', function() {
-                document.querySelectorAll('.tea-input').forEach(function(inp) {
-                    inp.value = '';
-                });
-                saveDraft();
-                showToast('已清空授课教师', 'info', 1500);
-            });
 
             var autoCheck = document.getElementById('autoSaveCheck');
             autoCheck.addEventListener('change', function() {
@@ -3505,7 +4390,7 @@
             if (typeof XLSX === 'undefined') {
                 showToast('⚠️ 表格库未加载，导出将使用CSV格式', 'warning', 5000);
             } else {
-                showToast('专用系统 · v4.9.2', 'success', 2000);
+                showToast('专用系统 · v4.9.23 课后服务汇总已包含全部课时（含周末）', 'success', 2000);
             }
         }
 
@@ -3551,6 +4436,23 @@
                 }
                 if (!localStorage.getItem(CLASS_LIST_KEY)) {
                     localStorage.setItem(CLASS_LIST_KEY, JSON.stringify(DEFAULT_CLASSES));
+                }
+                var existing = getData();
+                if (existing.length > 0) {
+                    var needUpdate = false;
+                    existing.forEach(function(item) {
+                        if (!item.dayOfWeek) {
+                            item.dayOfWeek = getDayOfWeek(item.date);
+                            needUpdate = true;
+                        }
+                        if (!item.recordTime && item.createdAt) {
+                            item.recordTime = new Date(item.createdAt).toLocaleString('zh-CN');
+                            needUpdate = true;
+                        }
+                    });
+                    if (needUpdate) {
+                        saveData(existing);
+                    }
                 }
             }
             initApp();
